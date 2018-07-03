@@ -1,0 +1,20 @@
+install nbconvert,pandoc,nbformat, xelatex
+
+jupyter nbconrt --to pdf hebermans.pdf
+
+
+
+open command prompt, goto the dir, put command : jupyter nbconvert --to pdf hebermans.ipynb
+the file name cannot contain blank
+
+exercise done: 
+hebermans dataset
+t-sne
+knn 
+naive bayes
+decision tree
+
+SVM 36
+logic 9
+GDBT 51
+cluster 34
