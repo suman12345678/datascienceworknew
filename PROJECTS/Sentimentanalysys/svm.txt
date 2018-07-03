@@ -1,0 +1,169 @@
+
+from sklearn.preprocessing import StandardScaler
+x=final_counts
+y =clean_data['Score']
+from sklearn.preprocessing import normalize
+x = normalize(x, norm='l1', axis=0)
+n=x.shape[0]
+n1=int(n*.3)
+from sklearn.preprocessing import label_binarize
+encoded_column_vector = label_binarize(y, classes=['negative','positive']) # negative will be 0 and positive will be 1
+encoded_labels = np.ravel(encoded_column_vector) # Reshape array
+y=encoded_labels
+y_test=y[0:n1]
+y_train=y[n1:n+1]
+X_test = x[0:n1,:]
+X_train= x[n1:n+1,:]
+y_test=y[0:n1]
+y_train=y[n1:n+1]
+print('size of X_train, X_test, y_train , y_test ',X_train.shape, X_test.shape,y_train.shape,y_test.shape)
+# Build model with linear kernel with random and grid search
+from sklearn import svm
+from sklearn.model_selection import validation_curve
+C=[.1,1,10,100]
+kernel=['linear']
+gamma=['auto']
+tuned_parameters=dict(C=C, kernel=kernel,gamma=gamma)
+#Using GridSearchCV
+model = GridSearchCV(svm.SVC(), tuned_parameters, scoring = 'f1', cv=5)
+model.fit(X_train, y_train)
+print('Best parameters with linear karnel and grid search\n',model.best_estimator_)
+optimumc=model.best_estimator_.C
+optimumgamma=model.best_estimator_.gamma
+model = svm.SVC(C=optimumc,gamma=optimumgamma)
+model.fit(X_train, y_train)
+pred=model.predict(X_test)
+mat=pd.crosstab(y_test, pred, rownames=['Actual'], colnames=['Predicted'], margins=True) 
+tp=mat.iloc[1,1] ;tn=mat.iloc[0,0] ;fp=mat.iloc[0,1];fn=mat.iloc[1,0];precision=tp/(tp+fp) 
+recall=tp/(tp+fn) 
+fscoretest=2*precision*recall/(precision+recall)
+pred=model.predict(X_train)
+mat=pd.crosstab(y_train, pred, rownames=['Actual'], colnames=['Predicted'], margins=True) 
+print(mat);tp=mat.iloc[1,1] ;tn=mat.iloc[0,0];fp=mat.iloc[0,1] ;fn=mat.iloc[1,0] ;precision=tp/(tp+fp);
+recall=tp/(tp+fn) 
+fscoretrain=2*precision*recall/(precision+recall)
+bb=pd.DataFrame({'type':['Grid search BOW'],'kernel':['linear'],'accuracy_train':[model.score(X_train,y_train)], \
+                 'fscore_train':[fscoretrain],'accuracy_test':[model.score(X_test,y_test)],'fscore_test':[fscoretest],\
+                 'C':[model.C],'gamma':[model.gamma]})
+aa=aa.append(bb)print("Test accuracy using linear kernel",model.score(X_test, y_test))
+print(aa)
+C=[1,10,50,100,150,200,500]
+param_range=[1,10,50,100,150,200,500]
+train_scores, test_scores = validation_curve(svm.SVC(), X_train, y_train, param_name="C",param_range=C,cv=5)
+train_scores_mean = np.mean(train_scores, axis=1)
+train_scores_std = np.std(train_scores, axis=1)
+test_scores_mean = np.mean(test_scores, axis=1)
+test_scores_std = np.std(test_scores, axis=1)
+plt.plot(param_range, train_scores_mean, label="Training score", color="black")
+plt.plot(param_range, test_scores_mean, label="Cross-validation score", color="red")
+plt.fill_between(param_range, train_scores_mean - train_scores_std, train_scores_mean + train_scores_std, color="gray")
+plt.fill_between(param_range, test_scores_mean - test_scores_std, test_scores_mean + test_scores_std, color="green")
+plt.title("Validation Curve With linear SVM for different C value")
+plt.xlabel("C value")
+plt.ylabel("Accuracy Score")
+plt.xlim(1,500)
+plt.tight_layout()
+plt.legend(loc="best")
+plt.show()
+# Try random search
+from sklearn.model_selection import RandomizedSearchCV
+C=[.1,.5,.8,1,2]
+kernel=['linear']
+gamma=['auto']
+tuned_parameters=dict(C=C, kernel=kernel,gamma=gamma)
+#Using random search
+model = RandomizedSearchCV(svm.SVC(), tuned_parameters, random_state=1, scoring = 'f1', cv=5)
+print('Best parameters using linear kernel and random search \n',model.estimator)
+#build model with best parameter
+optimumc=model.estimator.C
+optimumgamma=model.estimator.gamma
+model = svm.SVC(C=optimumc,gamma=optimumgamma)
+model.fit(X_train, y_train)
+pred=model.predict(X_test)
+mat=pd.crosstab(y_test, pred, rownames=['Actual'], colnames=['Predicted'], margins=True) 
+tp=mat.iloc[1,1] ;tn=mat.iloc[0,0] ;fp=mat.iloc[0,1];fn=mat.iloc[1,0];precision=tp/(tp+fp) 
+recall=tp/(tp+fn) 
+fscoretest=2*precision*recall/(precision+recall)
+
+pred=model.predict(X_train)
+mat=pd.crosstab(y_train, pred, rownames=['Actual'], colnames=['Predicted'], margins=True) 
+print(mat);tp=mat.iloc[1,1] ;tn=mat.iloc[0,0];fp=mat.iloc[0,1] ;fn=mat.iloc[1,0] ;precision=tp/(tp+fp);
+recall=tp/(tp+fn) 
+fscoretrain=2*precision*recall/(precision+recall)
+
+bb=pd.DataFrame({'type':['Random Search BOW'],'kernel':['linear'],'accuracy_train':[model.score(X_train,y_train)], \
+                 'fscore_train':[fscoretrain],'accuracy_test':[model.score(X_test,y_test)],'fscore_test':[fscoretest],\
+                 'C':[model.C],'gamma':[model.gamma]})
+aa=aa.append(bb)
+print(aa)
+# Check test accuracy
+print("Test accuracy",model.score(X_test, y_test))
+from sklearn import svm
+C=[.1,1,10,100]
+kernel=['rbf']
+gamma=[.01,.1,1,10]
+tuned_parameters=dict(C=C, kernel=kernel,gamma=gamma)
+model = GridSearchCV(svm.SVC(), tuned_parameters, scoring = 'f1', cv=5)
+model.fit(X_train, y_train)
+print('Best parameters with rbf karnel and grid search\n',model.best_estimator_)
+optimumc=model.best_estimator_.C
+optimumgamma=model.best_estimator_.gamma
+model = svm.SVC(C=optimumc,gamma=optimumgamma)
+model.fit(X_train, y_train)
+pred=model.predict(X_test)
+mat=pd.crosstab(y_test, pred, rownames=['Actual'], colnames=['Predicted'], margins=True) 
+tp=mat.iloc[1,1] ;tn=mat.iloc[0,0] ;fp=mat.iloc[0,1];fn=mat.iloc[1,0];precision=tp/(tp+fp) 
+recall=tp/(tp+fn) 
+fscoretest=2*precision*recall/(precision+recall)
+
+pred=model.predict(X_train)
+mat=pd.crosstab(y_train, pred, rownames=['Actual'], colnames=['Predicted'], margins=True) 
+print(mat);tp=mat.iloc[1,1] ;tn=mat.iloc[0,0];fp=mat.iloc[0,1] ;fn=mat.iloc[1,0] ;precision=tp/(tp+fp);
+recall=tp/(tp+fn) 
+fscoretrain=2*precision*recall/(precision+recall)
+
+
+bb=pd.DataFrame({'type':['Grid search BOW'],'kernel':['rbf'],'accuracy_train':[model.score(X_train,y_train)], \
+                 'fscore_train':[fscoretrain],'accuracy_test':[model.score(X_test,y_test)],'fscore_test':[fscoretest],\
+                 'C':[model.C],'gamma':[model.gamma]})
+aa=aa.append(bb)
+
+
+# Check test accuracy
+print("Test accuracy using linear kernel",model.score(X_test, y_test))
+C=[.1,.5,.8,1,2,5]
+kernel=['rbf']
+gamma=[.01,.1,1,10]
+tuned_parameters=dict(C=C, kernel=kernel,gamma=gamma)
+
+#Using random search
+model = RandomizedSearchCV(svm.SVC(), tuned_parameters, random_state=1, scoring = 'f1', cv=5)
+print('Best parameters using rbf kernel and random search \n',model.estimator)
+optimumc=model.estimator.C
+optimumgamma=model.estimator.gamma
+model = svm.SVC(C=optimumc,gamma=optimumgamma)
+model.fit(X_train, y_train)
+
+print("Test accuracy",model.score(X_test, y_test))
+gamma=[.9,.7,.5,.3,.1,1,2,5]
+param_range=[.9,.7,.5,.3,.1,1,2,5]
+train_scores, test_scores = validation_curve(svm.SVC(kernel='rbf',C=optimumc), X_train, y_train, param_name="gamma", \
+                                              param_range=gamma,cv=5)
+train_scores_mean = np.mean(train_scores, axis=1)
+train_scores_std = np.std(train_scores, axis=1)
+test_scores_mean = np.mean(test_scores, axis=1)
+test_scores_std = np.std(test_scores, axis=1)
+plt.plot(param_range, train_scores_mean, label="Training score", color="black")
+plt.plot(param_range, test_scores_mean, label="Cross-validation score", color="red")
+plt.fill_between(param_range, train_scores_mean - train_scores_std, train_scores_mean + train_scores_std, color="gray")
+plt.fill_between(param_range, test_scores_mean - test_scores_std, test_scores_mean + test_scores_std, color="green")
+plt.title("Validation Curve With linear SVM for different gamma value for optimum C value")
+plt.xlabel("gamma value")
+plt.ylabel("Accuracy Score")
+plt.xlim(.1,5)
+plt.tight_layout()
+plt.legend(loc="best")
+plt.show()
+
+
+
