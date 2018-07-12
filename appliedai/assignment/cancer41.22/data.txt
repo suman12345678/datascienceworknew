@@ -1,0 +1,34 @@
+Apply All the models with tf-idf features (Replace CountVectorizer with tfidfVectorizer and run the same cells)
+Instead of using all the words in the dataset, use only the top 1000 words based of tf-idf values
+Apply Logistic regression with CountVectorizer Features, including both unigrams and bigrams
+Try any of the feature engineering techniques discussed in the course to reduce the CV and test log-loss to a value less than 1.0
+
+total data : 3321      
+train_gene_feature_responseCoding/train_gene_feature_onehotCoding train_variation_feature_responseCoding/train_variation_feature_onehotCoding
+train_text_feature_onehotCoding/train_text_feature_ngram/train_text_feature_tfidf/train_text_feature_tfidf1000/
+train_text_feature_responseCoding
+total data
+==========
+train_x_onehotCoding/train_x_ngram/train_x_tfidf/train_x_tfidf1000/train_x_feature(for feature engineering)
+53735                753568        53735         3189              3189              
+
+#any dataset can be applied here like bow,tfidf,featurized,response coding
+#train_x_onehotCoding/train_x_ngram/train_x_tfidf/train_x_tfidf1000/train_x_feature(for feature engineering)
+    
+
+
+result(total data)
+y_train,y_text,y_cv  generesponse  geneonehot variation respnse variationOHE TEXTbow txtngram txttfidf txtresponse     
+train_df  2124       9             238         9                  1956	        51546   751379  51546     9 
+cv_df     665
+test_df   532
+
+
+train_text_features_1,train_text_fea_counts_1,text_fea_dict_1,confuse_array_1,sorted_text_fea_dict_1,
+sorted_text_occur_1 are splitted for 4 bow,ngram,tfidf,tfidf1000
+
+get_intersec_text splitted for 3(bow,ngram,tfidf)
+
+text_vectorizer = CountVectorizer(min_df=3,ngram_range=(1,2))
+
+text_vectorizer = TfidfVectorizer(min_df=3)
