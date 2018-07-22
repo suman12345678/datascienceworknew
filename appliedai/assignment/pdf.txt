@@ -8,13 +8,16 @@ open command prompt, goto the dir, put command : jupyter nbconvert --to pdf hebe
 the file name cannot contain blank
 
 exercise done: 
+=============
 hebermans dataset
 t-sne
-knn 
 naive bayes
 decision tree
+logistic
+knn 
+word vector using truncated SVD ??
 
 SVM 36
-logic 9
 GDBT 51
 cluster 34
+kmeans,hierarchical
