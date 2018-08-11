@@ -41,3 +41,11 @@ jupyter login: login@123
 
 
 netflix proze paper: Refer:https://datajobs.com/data-science-repo/Recommender-Systems-[Netflix].pdf
+
+Refer: http://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/
+
+Refer: https://github.com/seatgeek/fuzzywuzzy#usage
+
+playground.tensorflow.org
+
+http://jmlr.org/papers/volume15/srivastava14a.old/srivastava14a.pdf
