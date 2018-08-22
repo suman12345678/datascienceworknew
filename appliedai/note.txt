@@ -49,3 +49,96 @@ Refer: https://github.com/seatgeek/fuzzywuzzy#usage
 playground.tensorflow.org
 
 http://jmlr.org/papers/volume15/srivastava14a.old/srivastava14a.pdf
+
+Refer: https://en.wikipedia.org/wiki/Autoencoder
+
+Refer: http://ufldl.stanford.edu/tutorial/unsupervised/Autoencoders/
+
+W2V optimization: https://blog.acolyer.org/2016/04/21/the-amazing-power-of-word-vectors/
+
+Refer: https://medium.com/implodinggradients/tensorflow-or-keras-which-one-should-i-learn-5dd7fa3f9ca0
+
+colab:
+Refer: https://research.google.com/colaboratory/faq.html
+
+Refer: https://colab.research.google.com/
+
+
+Install TensorFlow
+
+Refer: https://www.tensorflow.org/install/install_windows
+
+Refer: https://www.tensorflow.org/get_started/
+
+Refer: https://learningtensorflow.com/
+
+Refer: https://cloud.google.com/blog/big-data/2017/01/learn-tensorflow-and-deep-learning-without-a-phd
+
+
+https://www.tensorflow.org/api_docs/python/tf/argmax 
+
+CNN:
+Refer: https://en.wikipedia.org/wiki/Sobel_operator
+
+Refer: https://en.wikipedia.org/wiki/Grayscale#/media/File:Beyoglu_4671_tricolor.png
+
+
+Refer: http://cs231n.github.io/convolutional-networks/
+
+Refer: http://www.iro.umontreal.ca/~bengioy/talks/DL-Tutorial-NIPS2015.pdf
+
+
+Refer: https://www.quora.com/How-are-the-parameters-of-max-pooling-represented-in-the-weights-nodes-of-a-neural-network
+
+Refer: https://world4jason.gitbooks.io/research-log/content/deepLearning/CNN/Model%20&%20ImgNet/lenet.html
+
+
+Refer: https://en.wikipedia.org/wiki/ImageNet
+
+Refer: https://www.kaggle.com/c/imagenet-object-detection-challenge
+
+Refer: https://hazyresearch.github.io/snorkel/blog/tanda_figs/data_aug_basic.png
+
+Convolution Layers in Keras
+Refer:https://keras.io/layers/convolutional/
+Refer: https://keras.io/layers/pooling/
+Refer: https://keras.io/layers/core/#flatten
+Refer: https://github.com/f00-/mnist-lenet-keras/blob/master/lenet.py
+
+alexnet:
+Refer: https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
+Refer: https://i0.wp.com/ramok.tech/wp-content/uploads/2017/12/2017-12-31_01h31_40.jpg
+Refer: http://euler.stat.yale.edu/~tba3/stat665/lectures/lec18/notebook18.html
+
+VGGNet
+Refer: https://www.quora.com/What-is-the-VGG-neural-network
+Refer: https://arxiv.org/pdf/1409.1556.pdf
+Refer: https://github.com/fchollet/deep-learning-models/blob/master/vgg16.py
+
+Residual Network.
+Refer: https://arxiv.org/pdf/1512.03385.pdf
+Refer: https://github.com/keras-team/keras/blob/master/keras/applications/resnet50.py
+
+Inception Network.
+Refer: http://www.ashukumar27.io/CNN-Inception-Network/
+Refer: https://github.com/keras-team/keras/blob/master/keras/applications/inception_v3.py
+Refer: https://arxiv.org/pdf/1512.00567.pdf
+
+What is Transfer learning.
+Refer: http://cs231n.github.io/transfer-learning/
+Refer: https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
+
+
+Code example: Cats vs Dogs. transfer learning
+Refer: https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
+
+
+Code Example: MNIST dataset.
+Refer: https://drive.google.com/file/d/1I5kcAaQKEx0IwUNQvZdYkctwCcWFf81N
+
+
+examples for YOLO:
+
+1. https://towardsdatascience.com/yolo-you-only-look-once-real-time-object-detection-explained-492dc9230006
+2. Keras: https://github.com/experiencor/keras-yolo2
+3. TensofrFlow: https://www.youtube.com/watch?v=4eIBisqx9_g
