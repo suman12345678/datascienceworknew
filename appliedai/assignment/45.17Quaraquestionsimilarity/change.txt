@@ -1,0 +1,19 @@
+final_tf_idf1
+final_tf_idf2
+
+word2tfidf
+dfnew=hstack((sparse_matrix, final_tf_idf1,final_tf_idf2)).tocsr()
+
+
+tf_idf_vect = TfidfVectorizer(ngram_range=(1,3),min_df = 5,max_features = 50000)
+final_tf_idf2 = tf_idf_vect.fit_transform(df['question2'])
+tf_idf_vect = TfidfVectorizer(ngram_range=(1,3),min_df = 5,max_features = 50000)
+final_tf_idf1 = tf_idf_vect.fit_transform(df['question1'])
+print(final_tf_idf1.shape,final_tf_idf2.shape,df.shape)
+df=df.drop(['id','question1','question2','qid1','qid2','is_duplicate'],axis=1)
+print("last",df.head())
+dense_matrix = np.array(df.as_matrix(columns = None), dtype=float).astype(np.float)
+sparse_matrix = csr_matrix(dense_matrix)
+#smuk check this one should be created after train test split
+dfnew=hstack((sparse_matrix, final_tf_idf1,final_tf_idf2)).tocsr()
+print(dfnew.shape)

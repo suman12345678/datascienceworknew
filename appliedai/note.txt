@@ -142,3 +142,37 @@ examples for YOLO:
 1. https://towardsdatascience.com/yolo-you-only-look-once-real-time-object-detection-explained-492dc9230006
 2. Keras: https://github.com/experiencor/keras-yolo2
 3. TensofrFlow: https://www.youtube.com/watch?v=4eIBisqx9_g
+
+
+LSTM:
+Refer: http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+
+GRUs.
+
+Refer: https://www.slideshare.net/hytae/recent-progress-in-rnn-and-nlp-63762080
+
+Refer: https://towardsdatascience.com/understanding-gru-networks-2ef37df6c9be
+
+https://machinelearningmastery.com/develop-bidirectional-lstm-sequence-classification-python-keras/
+
+Code example : IMDB Sentiment classification
+Refer: https://drive.google.com/file/d/1iWpQBiZO95pfOWLdaG6qKwA27d_Q-EDg/
+
+https://datascience.stackexchange.com/questions/10615/number-of-parameters-in-an-lstm-model
+
+
+Datasets. self driving car
+Refer: https://github.com/commaai/research
+Refer: https://github.com/udacity/self-driving-car/tree/master/datasets
+Refer: http://data.apollo.auto/?locale=en-us&lang=en
+Refer: https://github.com/SullyChen/Autopilot-TensorFlow
+
+NVIDIA’s end to end CNN model.
+Refer: model.py in zipped folder.
+Refer: https://arxiv.org/pdf/1604.07316.pdf
+Refer: https://devblogs.nvidia.com/deep-learning-self-driving-cars/
+
+
+Extensions.
+Refer: https://github.com/commaai/research
+
