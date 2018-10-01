@@ -176,3 +176,30 @@ Refer: https://devblogs.nvidia.com/deep-learning-self-driving-cars/
 Extensions.
 Refer: https://github.com/commaai/research
 
+ai generated music
+==================
+Refer: https://folkrnn.org/
+Refer: https://soundcloud.com/trivedigaurav/char-rnn-composes-long-composition
+Refer: https://soundcloud.com/sigur-ur-sk-li/neuralnet-music-1
+abc-notation: https://en.wikipedia.org/wiki/ABC_notation
+https://abcjs.net/abcjs-editor.html
+Refer: https://www.trivedigaurav.com/blog/machines-learn-to-play-tabla/
+MIDI: https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network-in-keras-68786834d4c5
+http://karpathy.github.io/2015/05/21/rnn-effectiveness/
+Refer: http://abc.sourceforge.net/NMD/
+Refer: http://trillian.mit.edu/~jc/music/book/oneills/1850/X/
+Refer: CODE: https://drive.google.com/file/d/1RFeSemr8k4ykbvb3x2nByMapPxN-OaM5/view?usp=sharing
+https://abcjs.net/abcjs-editor.html
+Refer: https://www.trivedigaurav.com/blog/machines-learn-to-play-tabla/
+Refer: https://www.trivedigaurav.com/blog/machines-learn-to-play-tabla-part-2/
+Refer: https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network-in-keras-68786834d4c5
+Refer: https://github.com/Skuldur/Classical-Piano-Composer
+Refer : https://medium.com/artists-and-machine-intelligence/neural-nets-for-generating-music-f46dffac21c0
+Refer: https://magenta.tensorflow.org/
+
+
+
+human activity recognigtion
+===========================
+Refer: https://archive.ics.uci.edu/ml/datasets/human+activity+recognition+using+smartphones
+
