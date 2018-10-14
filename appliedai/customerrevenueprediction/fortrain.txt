@@ -1,0 +1,66 @@
+
+#flatten json file
+aa=pd.DataFrame(processing_data_train.pop('device').apply(pd.io.json.loads).values.tolist(), index=raw_data_train.index)
+processing_data_train=processing_data_train.join(aa)
+aa=pd.DataFrame(processing_data_train.pop('trafficSource').apply(pd.io.json.loads).values.tolist(), index=raw_data_train.index)
+processing_data_train=processing_data_train.join(aa)
+aa=pd.DataFrame(processing_data_train.pop('geoNetwork').apply(pd.io.json.loads).values.tolist(), index=raw_data_train.index)
+processing_data_train=processing_data_train.join(aa)
+aa=pd.DataFrame(processing_data_train.pop('totals').apply(pd.io.json.loads).values.tolist(), index=raw_data_train.index)
+processing_data_train=processing_data_train.join(aa)
+aa=processing_data_train['adwordsClickInfo'].apply(lambda x: pd.Series(x))
+processing_data_train=processing_data_train.join(aa)
+processing_data_train=processing_data_train.drop('adwordsClickInfo',axis=1)
+processing_data_train['date']=  \
+  processing_data_train['date'].apply(lambda x: calendar.day_name[datetime.date(int(str(x)[:4]),int(str(x)[4:6]),int(str(x)[6:8])).weekday()])
+
+
+#merging source text and networkDomain text into source column    
+processing_data_train['source']= processing_data_train["source"].map(str) + processing_data_train["networkDomain"]
+#use as per train
+final_counts = count_vect.transform(processing_data_train['source'].values)
+processing_data_train=processing_data_train.reset_index()
+processing_data_train=pd.DataFrame(final_counts.todense()).join(processing_data_train)
+
+#replace country,city,region,continent by mean
+processing_data_train['country']=processing_data_train['country'].apply(lambda x: country_mean.loc[str(x)])
+processing_data_train['city']=processing_data_train['city'].apply(lambda x: city_mean.loc[str(x)])
+processing_data_train['metro']=processing_data_train['metro'].apply(lambda x: metro_mean.loc[str(x)])
+processing_data_train['region']=processing_data_train['region'].apply(lambda x: region_mean.loc[str(x)])
+
+#onehot
+l=['channelGrouping','date','browser','deviceCategory','operatingSystem','medium','continent','subContinent' ]
+
+#cannot drop special char like () in column name
+processing_data_train.columns=processing_data_train.columns.str.replace('(','')
+processing_data_train.columns=processing_data_train.columns.str.replace(')','')
+
+#onehot code
+for i in l:
+  print("create onehot for ",i)  
+  onehot=pd.get_dummies(processing_data_train[i])
+  processing_data_train=processing_data_train.drop(i,axis=1)
+  processing_data_train=processing_data_train.join(onehot)
+  #remove column if its ['(none)','not available in demo dataset'] 
+  processing_data_train.columns=processing_data_train.columns.str.replace('(','')
+  processing_data_train.columns=processing_data_train.columns.str.replace(')','')
+
+  if 'none' in processing_data_train.columns:
+     processing_data_train.drop(['none'],axis=1)   
+  if 'not available in demo dataset' in processing_data_train.columns:
+     processing_data_train.drop(['not available in demo dataset'],axis=1) 
+  if 'not set' in processing_data_train.columns:
+     processing_data_train.drop(['not set'],axis=1) 
+
+
+#convert boolean to int
+processing_data_train['isMobile']=(processing_data_train['isMobile'] == 'TRUE').astype(int)
+
+
+#now remove the columns which are not in train
+print('text columns',len(processing_data_train.columns))
+processing_data_train.columns=train_columns
+print('text columns',len(processing_data_train.columns))
+
+
+
