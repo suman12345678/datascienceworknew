@@ -1,1 +1,248 @@
 
+#######################
+import keras
+import tensorflow as tf
+from keras import applications
+from keras.preprocessing import image
+from keras.applications.vgg19 import preprocess_input
+from keras.models import Model, load_model
+import numpy as np
+from keras.layers import Conv2D,MaxPooling2D
+from keras.models import Sequential
+from keras.layers.core import Activation
+from keras.preprocessing import image
+from keras.models import Model
+from keras.layers import Dense,GlobalAveragePooling2D
+from keras import backend as K
+import os
+from keras import applications
+from keras.applications.vgg16 import preprocess_input
+from keras.models import Model
+from keras.preprocessing.image import ImageDataGenerator
+from keras.optimizers import Adam
+from keras.preprocessing.image import load_img
+from keras.preprocessing.image import img_to_array
+import cv2
+from shutil import copyfile
+import sys
+from datetime import date
+from keras.models import model_from_json
+from keras.utils import multi_gpu_model
+print('all pkg imported')
+
+
+dir1=r'C:\Users\c_MukhopadhyayS\Desktop\POC\inputimage' for r, d, f in os.walk(dir1+'\'+'train'): print('*') i=0 for file in f: if '.jpg' in file: 
+                #print(r,file)
+                #print(dir1+'\\'+r.split('\\')[-2]+'\\'+r.split('\\')[-1]+'\\'+file)
+                #print(dir1+'\\'+'validation'+'\\'+r.split('\\')[-1]+'\\'+file)
+                #print(r.split('\')[-1])
+                i=i+1
+                try:
+                    os.mkdir(dir1+'\\'+'validation'+'\\'+r.split('\\')[-1])
+                except:
+                    pass
+                copyfile(dir1+'\\'+r.split('\\')[-2]+'\\'+r.split('\\')[-1]+'\\'+file,dir1+'\\'+'validation'+'\\'+r.split('\\')[-1]+'\\'+file)
+                os.remove(dir1+'\\'+r.split('\\')[-2]+'\\'+r.split('\\')[-1]+'\\'+file)
+                if i>2:
+                    i=0
+                    break
+
+
+
+#def parameters_input(train_path=r'C:\Users\c_MukhopadhyayS.DS-S\Desktop\POC\inputimagecopy',tensorboard_path=r'C:\Users\c_MukhopadhyayS.DS-S\Desktop\POC\tensorboard',
+#                    ):
+#Image path where train test and validation folder exist
+train_path=r'C:\Users\c_MukhopadhyayS.DS-S\Desktop\POC\inputimagecopy'
+#tensorboard log directory
+tensorboard_path=r'C:\Users\c_MukhopadhyayS.DS-S\Desktop\POC\tensorboard'
+
+#Where log file should be generated
+log_file=r'C:\Users\c_MukhopadhyayS.DS-S\Desktop\POC\log.txt'
+#log directory for creating tensorboard
+log_dir=r'C:\Users\c_MukhopadhyayS.DS-S\Desktop\POC\tensorboard'
+
+#Image size to feed into network
+image_size=(300, 300,3)
+image_size_2d=(image_size[0],image_size[1])
+#batch size
+batch_size = 10
+#epoch
+epochs=1
+#if models are stored in different directory
+modeldir=r'C:\Users\c_MukhopadhyayS.DS-S\Desktop\POC\keraspkg\\'
+
+#layer addition
+layers=[GlobalAveragePooling2D(),Dense(1024,activation='relu'),Dense(1024,activation='relu'),Dense(512,activation='relu')]
+
+#model name mapping
+m=[applications.densenet.DenseNet121,applications.densenet.DenseNet169,applications.densenet.DenseNet201, applications.inception_resnet_v2.InceptionResNetV2,applications.inception_v3.InceptionV3,applications.mobilenet.MobileNet,applications.mobilenet_v2.MobileNetV2,applications.nasnet.NASNetLarge,applications.nasnet.NASNetMobile,applications.resnet_v2.ResNet101V2,applications.resnet.ResNet101,applications.resnet_v2.ResNet152V2,applications.resnet.ResNet152,applications.resnet_v2.ResNet50V2,applications.resnet.ResNet50,applications.vgg16.VGG16,applications.vgg19.VGG19,applications.xception.Xception]
+#for f in os.listdir(r'C:\Users\c_MukhopadhyayS.DS-S\.keras\models'):
+
+#model_mapping={}
+
+#model to load
+#model_name='resnet50_weights_tf_dim_ordering_tf_kernels_notop'
+model_name='resnet152v2_weights_tf_dim_ordering_tf_kernels_notop'
+
+
+
+#model name to run if from C:\Users\c_MukhopadhyayS.DS-S\.keras\models
+#model = applications.vgg19.VGG19(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.nasnet.NASNetLarge(weights='imagenet', include_top=False,input_shape=(331, 331, 3)) #(331, 331, 3).
+#model = applications.nasnet.NASNetMobile(weights='imagenet', include_top=False,input_shape=(224, 224, 3)) #(224, 224, 3).
+#model = applications.densenet.DenseNet121(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.densenet.DenseNet169(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.densenet.DenseNet201(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.mobilenet_v2.MobileNetV2(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.mobilenet.MobileNet(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.xception.Xception(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.resnet.ResNet50(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.resnet.ResNet101(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.resnet.ResNet152(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.resnet_v2.ResNet50V2(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.resnet_v2.ResNet101V2(weights='imagenet', include_top=False,input_shape=image_size)   #not done
+#model = applications.resnet_v2.ResNet152V2(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.vgg16.VGG16(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.inception_resnet_v2.InceptionResNetV2(weights='imagenet', include_top=False,input_shape=image_size)
+#model = applications.inception_v3.InceptionV3(weights='imagenet', include_top=False,input_shape=image_size)
+
+m=[applications.densenet.DenseNet121,applications.densenet.DenseNet169,applications.densenet.DenseNet201, applications.inception_resnet_v2.InceptionResNetV2,applications.inception_v3.InceptionV3,applications.mobilenet.MobileNet,applications.mobilenet_v2.MobileNetV2,applications.nasnet.NASNetLarge,applications.nasnet.NASNetMobile,applications.resnet_v2.ResNet101V2,applications.resnet.ResNet101,applications.resnet_v2.ResNet152V2,applications.resnet.ResNet152,applications.resnet_v2.ResNet50V2,applications.resnet.ResNet50,applications.vgg16.VGG16,applications.vgg19.VGG19,applications.xception.Xception] i=0 for f in os.listdir(r'C:\Users\c_MukhopadhyayS.DS-S.keras\models'): print(f.split('.')[0]) print(m[i]) if f.split('.')[0] in ['nasnet_large_no_top','nasnet_mobile_no_top']: pass
+else:
+    model = m[i](weights='imagenet', include_top=False,input_shape=image_size)
+    #save model weights and json from different directory
+    model_json = model.to_json()
+    #print(modeldir+'\\'+f.split('.')[0]+'.json')
+    with open(modeldir+f.split('.')[0]+'.json', "w") as json_file:
+        json_file.write(model_json)    
+i=i+1
+
+
+#load saved model
+# Option 1: Load Weights + Architecture
+with open(modeldir+model_name+'.json', 'r') as f:
+    model = model_from_json(f.read())
+model.load_weights(modeldir+model_name+'.h5')
+
+############################# datagen = ImageDataGenerator( rotation_range=40, width_shift_range=0.2, height_shift_range=0.2, rescale=1./255, shear_range=0.2, zoom_range=0.2, horizontal_flip=True, fill_mode='nearest')
+
+for r, d, f in os.walk(train_path): for file in f: if '.jpg' in file: imageorig=cv2.imread(r+'\'+file) temp_img=image.load_img(r+'\'+file,target_size=image_size) temp_img=image.img_to_array(temp_img)
+                #create extra image
+                i = 0
+                temp_img = temp_img.reshape((1,) + temp_img.shape)
+                for batch in datagen.flow(temp_img, batch_size=1,
+                                          save_to_dir=r, save_prefix='gen_', save_format='jpg'):
+                    i += 1
+                    if i > 0:
+                        break  # otherwise the generator would loop indefinitely
+
+
+#create data generator
+# this is the augmentation configuration we will use for training execute only once
+train_datagen = ImageDataGenerator(
+        rescale=1./255,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True)
+
+train_generator = train_datagen.flow_from_directory(
+        train_path+'\\train',  # this is the target directory
+        target_size=image_size_2d,  # all images will be resized to 150x150
+        batch_size=batch_size,
+        class_mode='categorical')  # since we use binary_crossentropy loss, we need binary labels
+
+# this is the augmentation configuration we will use for testing:
+# only rescaling
+test_datagen = ImageDataGenerator(rescale=1./255)
+
+
+# this is a similar generator, for validation data
+validation_generator = test_datagen.flow_from_directory(
+        train_path+'\\validation',
+        target_size=image_size_2d,
+        batch_size=batch_size,
+        class_mode='categorical')
+        
+# create model
+#######################
+trainclasses=[]
+train_sample=0
+test_sample=0
+for i in os.listdir(train_path+'\\train'):
+    for j in os.listdir(train_path+'\\train\\'+i):
+        train_sample=train_sample+1
+        
+    trainclasses.append(i)
+print('classes',len(trainclasses))
+
+validationclasses=[]
+for i in os.listdir(train_path+'\\validation'):
+    for j in os.listdir(train_path+'\\validation\\'+i):
+        test_sample=test_sample+1
+    #print(i)
+    validationclasses.append(i)
+print('classes',len(validationclasses))
+
+x=model.output
+
+for i in layers:
+    x=i(x)
+preds=Dense(len(trainclasses),activation='softmax')(x)
+
+#x=GlobalAveragePooling2D()(x)
+#x=Dense(1024,activation='relu')(x) #we add dense layers so that the model can learn more complex functions and classify for better results.
+#x=Dense(1024,activation='relu')(x) #dense layer 2
+#x=Dense(512,activation='relu')(x) #dense layer 3
+#preds=Dense(len(trainclasses),activation='softmax')(x) #final layer with softmax activation
+
+mymodel=Model(inputs=model.input,outputs=preds)
+
+#if we want to set the first 20 layers of the network to be non-trainable
+orig_layers=len(model.layers)
+for layer in mymodel.layers[:orig_layers]:
+    layer.trainable=False
+    
+#print(model.summary())
+print(mymodel.summary())
+print('train sample',train_sample,'test_sample',test_sample)
+
+
+
+#create tensorboard
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+import tensorflow as tf
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+with tf.device('/cpu:0'):
+    mymodel=mymodel
+#with tf.device('/cpu:0'):
+        #model = mymodel(weights=None,
+ #                        input_shape=(height, width, 3),
+  #                       classes=num_classes)
+parallel_model = multi_gpu_model(mymodel,gpus =2)  
+
+mymodel.compile(loss='binary_crossentropy',optimizer='rmsprop',metrics=['accuracy'])
+
+mymodel_fit=mymodel.fit_generator(train_generator,steps_per_epoch=train_sample// batch_size,epochs=epochs,
+        validation_data=validation_generator,
+        validation_steps=test_sample// batch_size, callbacks=[tbCallBack])
+#mymodel.save_weights('first_try.h5')  # always save your weights after training or during training
+
+added_layer=[]
+for layer in mymodel.layers:
+    if layer.trainable:
+        #print(layer.name)
+        #print(layer.output_shape)
+        added_layer.append(layer.name+":"+str(layer.output_shape))
+try:
+    file = open(log_file, 'r')
+except IOError:
+    file = open(log_file, 'w')
+    
+with open(log_file,'a') as f:
+    f.write('\ndate$$Model_Used$$Layers Accuracy$$Optimizer$$epoch\n')
+    f.write(str(date.today())+'$$'+str(model.name)+'$$'+str(added_layer)+'$$'+str(mymodel_fit.history)+'$$'+str(mymodel.optimizer)+'$$'+str(epochs))
+    
+    # use tensorboard
+    #execute from anaconda prompt
+#tensorboard --logdir C:\Users\c_MukhopadhyayS.DS-S\Desktop\POC\tensorboard\ --host=localhost --port=8082
+
