@@ -1,0 +1,33 @@
+can be supervised and unsupervised. 
+can predict stock price, language sequence predict
+assumption: next step depands on current step and not on previous step
+joint prob A intersecion B= p(a|b)p(b)
+p(s4,s3,s2,s1)=p(s4|s3,s2,s1)p(s3,s2,s1)
+              =p(s4|s3,s2,s1)p(s3|s2,s1)
+	      -p(s4|s3,s2,s1)p(s3|s2,s1)p(s2|s1)p(s1)
+with assumption current state only depands on previous above simplifies to 
+p(s4|s3)p(s3|s2)p(s2|s1)p(s1)
+if current stae depands on previous 2 state its 2nd order markov model
+if current stae depands on previous 3 state its 3rd order markov model
+
+we need one transition probability: rainy,sunny,cloudy for markov model
+whats the probability of s->s->r->c
+p(s)*p(s|s)*p(r|s)*p(c|r)  p(s) comes from initial others from state transition probability
+from this we can compare 2 sequence and tell which one more likely to happen
+training markov model
+=====================
+3 trainng sentences
+i like dogs
+i like cats
+i love kangaroos
+there are 6 states i like love dogs cats kangaroos
+pi(I) = 1 as all sentences starts with I
+p(like | I)=2/3
+p(love|I)=1/3
+if we get some data in test which not in train the probability 0 will make entire 0
+so like naive bayes we do smoothing
+
+markov chain: still markov model, but equatins are difficult. its a discrete-time stochastic process
+
+
+	
