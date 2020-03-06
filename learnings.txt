@@ -1,0 +1,23 @@
+CNN can also work with text data, as cNN good to consider spatial distance whereas RNN good for timely sequence data.
+each sentence after embedding with form n*k is convolve by 1-d convolution then 1d maxpool
+after embedding we can pass conv1d wih filter size 32, kernel_size=4
+we can add drop,maxpool,flatten
+we can parally run other 2 conv,maxpool1d,drop,flat with different kernel
+as last we can concatenate flat layers
+add dense
+
+doc length 1380 embed size 100 vocabulary size 44277
+embedding each layer param: 4427700
+
+
+Embedding: convensionally BOW were used for vector representation of words but it was sparce, alternatively embedding used as a dense matrix of words
+           this is learnt by CBOW / skip gram method. Word2Vec and GloVe are popular example
+	   in keras embedding it expect input as a 
+	   1)input_dim: size of vocabulary (a word is represented as number in Embedding, 
+	   starting from 1 like this {'Hi':1,'There':2}, 0 is kept for padding)
+	   2) output_dim: size of vector for each word
+	   3) input_length: Length of input sequence. to make all sentecnecs same length 0 padding is done
+
+	   the output of embedding layer N*V --> is N*V*output_dim. so each words  
+	   
+
