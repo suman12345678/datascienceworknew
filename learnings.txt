@@ -45,4 +45,44 @@ for t in range(Ty):
    x,h=m2.predict(x,h)
 
 
+techer forcing
+--------------
+instead of feeding previous output in decoder to next LSTM actual data is feed
+so even if model didnot get correct word, its corrected
+this is used only in training
+
+but in testinh we cannot pass the true value, so we use original archi
+that is feed previous output of decoder to next input.
+fo during trainng constant size input, but in test input length is 1, as it will goin loop 
+to generate a single word
+always input size should be constant
+
+to solve this we create 2 model
+
+emb=Embedding(); lstm=LSTM(); dense=Dense()
+
+m1=Model(Input(length=Ty), dense(lstm(emb(Input(length=Ty))))
+
+m2=Model(Input(length=1), dense(lstm(emb(Input(length=1))))
+
+h=encoder model output; x=<SOS>
+for t in range(Ty):
+   x,h=m2.predict(x,h)
+
+
+
+
+
+
+attention
+---------
+lstm has still limit.
+in attention instead of hardmax we take soft max with probability.
+that is insteda of globalmaxpool probabilitical output
+
+
+in attention we still use seq2seq using encoder and decoder
+encoder use bidirectional lstm
+so from encoder we send all outputs to Attention. Attention will consider all 
+and create one context
 
