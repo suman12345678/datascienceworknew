@@ -1,0 +1,143 @@
+if filter of convolution very much corelated with the part of image it prodice high number else low.
+So filtering can be think as corelation
+
+Depanding on package we use color comes in different dimension(TF color 3rd, Theano 1st)
+
+unlike relational data(which maybe different in different company), images and text are same 
+irrespective of source. so transfer learning is useful and is done to save time. 
+
+VGG first few layers can work as feature extractor
+
+if include_top=False we need input size of image to be specified, for whole network to use has specific inputside
+
+VGG works well for transfer learning other than any other architecture
+
+SSD: single shot multibox detector. This outperform YOLO in performances and accuracy
+
+object localization: is regression and classification. 
+Landmark detection(when bounding box is facial keypoints)
+we use vgg for featurization and apply logistic(for class detction) and regression(to find bounding box)
+1 to identify if classes are present, n for identifying n classes, 4 for bounding box
+
+
+detction:
+if we do sliding window and do prediction using a for loop(one for rowwise another columnwise) of each window its time consuming.
+instead, (RCNN) we can do below
+
+NOrmally: 
+32*32*3  -> conv 32*5*5*3 -> 32*28*28 -> pool 2 ->32*14*14 ->conv 64*32*5*5 -> 64*10*10 -> pool 2--> 64*5*5 -> dense 1600*128 -> 128 ->dense 128*128 ->128 ->dense 128*3->3
+first trick we convert dense layers to convolution layers so no of parameter will be same. 
+32*32*3  -> conv 32*5*5*3 -> 32*28*28 -> pool 2 ->32*14*14 ->conv 64*32*5*5 -> 64*10*10 -> pool 2--> 64*5*5 -> conv 128*64*5*5 -> 128*1*1 ->conv 128*128*1*1 ->128*1*1 ->conv 3*128*1*1->3*1*1  
+
+Here both case has same no of parameters. Doing convolution equivalanet to matrix multiplication in this sceanario.
+Now lets say instead of 32*32*3 we have 36*36*3 as image. SO we can conolve with 32*5*5*3 which will reduce to 32*32*32 
+36*36*3-> conv 32*5*5*3 -> 32*32*32  -> pool2-> 16*16*32 -> conv 64*5*5*32 -> 64*12*12 -> pool 2 ->64*6*6 -> conv 128*64*5*5 -> 128*2*2 -> conv 128*128*1*1 -> 128*2*2 ->conv 3*128*1*1 ->3*2*2
+
+Here last 3 layers image size is 2*2. These 4 corresponds to 4 window of original image. If we have done for loop or 4 slides of image the same result we have got
+But this is faster. 
+SSD(single shot) thus gives huge speed up.
+
+But the problem in this approach is scale of different objects are different. above approach assume same size
+each layer we predict bounding box and class **** 
+
+
+shape problem. for each window we try different aspect ratio
+
+IOU: first we select the box with highest probability, then we reject other boxes which has IOU higher than a threshold of the selected IOU. This process called non max supression
+
+
+style transfer
+==============
+input 2 images(input image and style image) and create output as one image with similar style of style image
+Here we dont try to find network weights w, instead we use vgg weights. [we want to take only features of image and style of other image]
+we calculate 2 loss. content loss and style loss of generated image. We should only take content from content image and not style and vice versa.
+in each iteration all 3 images are passed through vgg16, the value of the hidden layers(only one layer) activation(i.e. output) are taken as input to content loss. 
+while calculating style loss we consider many layers style loss using gram matrix pairs[so we have several pair of gram matrix]. loss sum of is square loss or L2
+gram matrix: its the corelation of different channel as a matrix
+lets say in a output shape if 56*56*256, so there are 256 channel each 56*56 shape. If we flatten it become 3136. Now lets say channal A activate by seeing eye, channel C also activated by seeing
+eye, then there is high corelation between channel A and C. in gram matrix we create corelation beteween each channel.Gram matrix act as a style
+
+M= a11 a12  ..  a1 3136
+   a21 22   ..  a2 3136
+
+gram matrix = M.Mt. and dimension becomes 256*256. [SO for one feature map we will get one elements and we lose information of 56*56 feature map. So basically from 56*56 we get 1 information which represents style.]
+for style and generated image in a channel we calculate gram matrix. As both are same channel of vgg16, the shape of gram matrix are same . 
+Now if we find sum of square difference or L2_norm of element subtraction of these two matrices and try to minimize it, that will be sytle loss
+Then this will eventually lead to minimizing the difference between the style of style image and the generated image. 
+we take different weight for content and style(its an art) mean squareed error
+
+
+
+So we try to minimize loss (content+style) and try to change generated image[at first generated image is quite similar of original image with some noise]
+
+
+implementing style transfer
+===========================
+we use vgg16 and replace maxpool with avgpool and use same weights as vgg16
+vgg=VGG16(input_shape=...,weights='imagenet',include_top=False)
+new=Sequential()
+for layer in vgg.layer:
+   if layer.__class__==Maxpooling2D:
+	new.add(Averagepooling2D) 
+   else:
+	new.add(layer)
+
+	
+
+
+
+
+
+
+
+
+tensorflow
+==========
+==========
+it can be started in python cell
+constant: h=tf.constant('Hello')
+========
+
+sess=tf.Session()
+evaluate by: 
+print(sess.run(h)) ==> Hello
+
+
+
+everything is a graph in tensorflow. Nodes are computations and edges are data items. Thats why it naturaly patches with neural network
+so tensorflow is flow of data[tensor of different dimensions] through node/computation node
+TF is directed acyclic graph
+TF steps: 1) build a graph/(define the data and operation) 2)  running a graph or execute the graph
+2 independent node can be calculated parallelly so its distributed
+Tensors can be any no of dimension and shape. scaler are 0 dim tensor. shape of a tensor is a vector
+scaler = 1, shape =[] rank0
+vector = [1,2,3], shape=[3]  rank 1
+matrix = [[1,2,3],[4,5,6]], shape=[2,3] rank 2
+
+tf.reduce_sum(x)  --> sum individual elments of x. similarly reduce_mean, reduce_prod
+
+tensorflow serving used for deployment in production, TF board is visualization tool
+
+
+constant: never values get change. immutable
+variable: These are parameters of ml model like A and B in regression. Values will persist across multiple session.run(). a=tf.Variable([1,2],tf.float32,name='a')
+placeholder: these are x and y values a model can accept or these are input nodes . Assigned once. x=tf.placeholder(tf.int32, shape=[3], name='x'). sample example of x is [1,2,3] as it has shape[3]
+
+init all variable:
+tf.global_variables_initializer([a])
+
+solving regression by TF:
+take random no of A and B  y=Ax+B
+a.assign_add(1) --> increment by 1
+
+
+feed_dictionary
+===============
+this is used to pass input to placeholders.
+x=tf.placeholder(tf.int32, shape=[3], name='x')
+with tf.session() as sess:
+print(sess.run(x,feed_dict={x:[1,2,3]}
+
+
+  
+
